@@ -1,21 +1,23 @@
-package user;
+package dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-public class UserDAO {
+import dto.UserDto;
+
+public class UserDao {
 
 	private Connection conn;
 	private PreparedStatement pstmt;
 	private ResultSet rs;
 	
-	public UserDAO(){
+	public UserDao(){
 		try{
 			String dbURL= "jdbc:oracle:thin:@127.0.0.1:1521:xe";
-			String dbID= "hr";
-			String dbPassword= "hr";
+			String dbID= "leafbox";
+			String dbPassword= "leafbox";
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			conn= DriverManager.getConnection(dbURL, dbID, dbPassword);
 			
@@ -48,15 +50,15 @@ public class UserDAO {
 		return -2; //데이터베이스 오류
 	}
 	
-	public int join(User user){
+	public int join(UserDto userDto){
 		String SQL= "INSERT INTO USERS VALUES (?, ?, ?, ?, ?)";
 		try{
 			pstmt= conn.prepareStatement(SQL);
-			pstmt.setString(1, user.getUserID());
-			pstmt.setString(2, user.getUserPassword());
-			pstmt.setString(3, user.getUserName());
-			pstmt.setString(4, user.getUserGender());
-			pstmt.setString(5, user.getUserEmail());
+			pstmt.setString(1, userDto.getUserID());
+			pstmt.setString(2, userDto.getUserPassword());
+			pstmt.setString(3, userDto.getUserName());
+			pstmt.setString(4, userDto.getUserGender());
+			pstmt.setString(5, userDto.getUserEmail());
 			return pstmt.executeUpdate();
 		}catch(Exception e){
 			e.printStackTrace();

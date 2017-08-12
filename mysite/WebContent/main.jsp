@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="viewport" content="width=device-width", initial-scale="1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="css/bootstrap.css">
 <link rel="stylesheet" href="css/custom.css">
 
@@ -37,7 +37,7 @@
 		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav">
 				<li class="active"><a href="main.jsp">메인</a></li>
-				<li><a href="bbs.jsp">게시판</a></li>
+				<li><a href="bbs.do">게시판</a></li>
 			</ul>
 			
 			<%
@@ -51,13 +51,11 @@
 						</a>
 	
 						<ul class="dropdown-menu">
-							<li><a href="login.jsp">로그인</a></li>
-							<li><a href="join.jsp">회원가입</a></li>
+							<li><a href="login.do">로그인</a></li>
+							<li><a href="join.do">회원가입</a></li>
 						</ul>
 					</li>
 				</ul>
-
-
 			<%
 				}else{	
 			%>
@@ -69,7 +67,7 @@
 						</a>
 	
 						<ul class="dropdown-menu">
-							<li><a href="logoutAction.jsp">로그아웃</a></li>
+							<li><a href="logout.do">로그아웃</a></li>
 						</ul>
 					</li>
 				</ul>

@@ -1,4 +1,4 @@
-package bbs;
+package dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -6,16 +6,18 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
-public class BbsDAO {
+import dto.BbsDto;
+
+public class BbsDao {
 
 	private Connection conn;
 	private ResultSet rs;
 	
-	public BbsDAO(){
+	public BbsDao(){
 		try{
 			String dbURL= "jdbc:oracle:thin:@127.0.0.1:1521:xe";
-			String dbID= "hr";
-			String dbPassword= "hr";
+			String dbID= "leafbox";
+			String dbPassword= "leafbox";
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			conn= DriverManager.getConnection(dbURL, dbID, dbPassword);
 			
@@ -75,21 +77,21 @@ public class BbsDAO {
 		return -1; //데이터베이스 오류
 	}
 	
-	public ArrayList<Bbs> getList(int pageNumber){
+	public ArrayList<BbsDto> getList(int pageNumber){
 		//String SQL= "SELECT * FROM bbs WHERE bbsID<? AND bbsAvailable=1 ORDER BY bbsID DESC LIMIT 10";
 		String SQL= "select bbsid, bbstitle, userid, bbsdate, bbscontent, bbsavailable"
 				+ " from (SELECT rownum as rnum, bbsid, bbstitle, userid, bbsdate, bbscontent, bbsavailable "
 				+ " from bbs where bbsID<? and bbsAvailable=1 ORDER BY bbsID DESC) "
 				+ " where rnum between 1 and 10";
 		
-		ArrayList<Bbs> list= new ArrayList<Bbs>();
+		ArrayList<BbsDto> list= new ArrayList<BbsDto>();
 		try{
 			PreparedStatement pstmt= conn.prepareStatement(SQL);
 			pstmt.setInt(1,  getNext() - (pageNumber-1) * 10);
 			rs= pstmt.executeQuery();
 			
 			while (rs.next()){
-				Bbs bbs= new Bbs();
+				BbsDto bbs= new BbsDto();
 				bbs.setBbsID(rs.getInt(1));
 				bbs.setBbsTitle(rs.getString(2));
 				bbs.setUserID(rs.getString(3));
@@ -120,7 +122,7 @@ public class BbsDAO {
 		return false;
 	}
 	
-	public Bbs getBbs(int bbsID){
+	public BbsDto getBbs(int bbsID){
 		String SQL= "SELECT * FROM bbs WHERE bbsID= ?";
 		try{
 			PreparedStatement pstmt= conn.prepareStatement(SQL);
@@ -128,7 +130,7 @@ public class BbsDAO {
 			rs= pstmt.executeQuery();
 			
 			if(rs.next()){
-				Bbs bbs= new Bbs();
+				BbsDto bbs= new BbsDto();
 				bbs.setBbsID(rs.getInt(1));
 				bbs.setBbsTitle(rs.getString(2));
 				bbs.setUserID(rs.getString(3));

@@ -1,6 +1,6 @@
-package bbs;
+package dto;
 
-public class Bbs {
+public class BbsDto {
 
 	private int bbsID;
 	private String bbsTitle;

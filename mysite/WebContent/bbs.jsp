@@ -1,14 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="java.io.PrintWriter" %>
-<%@ page import="bbs.BbsDAO" %>
-<%@ page import="bbs.Bbs" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="dto.BbsDto" %>
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="viewport" content="width=device-width", initial-scale="1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="css/bootstrap.css">
 <link rel="stylesheet" href="css/custom.css">
 
@@ -27,10 +27,7 @@
 		if (session.getAttribute("userID")!= null){
 			userID= (String) session.getAttribute("userID");
 		}
-		int pageNumber= 1;
-		if (request.getParameter("pageNumber") != null){
-			pageNumber= Integer.parseInt(request.getParameter("pageNumber"));
-		}
+		
 	%>
 
 	<nav class="navbar navbar-default">
@@ -48,7 +45,7 @@
 		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav">
 				<li><a href="main.jsp">메인</a></li>
-				<li class="active"><a href="bbs.jsp">게시판</a></li>
+				<li class="active"><a href="bbs.do">게시판</a></li>
 			</ul>
 			
 			<%
@@ -62,8 +59,8 @@
 						</a>
 	
 						<ul class="dropdown-menu">
-							<li><a href="login.jsp">로그인</a></li>
-							<li><a href="join.jsp">회원가입</a></li>
+							<li><a href="login.do">로그인</a></li>
+							<li><a href="join.do">회원가입</a></li>
 						</ul>
 					</li>
 				</ul>
@@ -80,7 +77,7 @@
 						</a>
 	
 						<ul class="dropdown-menu">
-							<li><a href="logoutAction.jsp">로그아웃</a></li>
+							<li><a href="logout.do">로그아웃</a></li>
 						</ul>
 					</li>
 				</ul>
@@ -103,13 +100,12 @@
 				</thead>
 				<tbody>
 					<%
-						BbsDAO bbsDAO= new BbsDAO();
-						ArrayList<Bbs> list= bbsDAO.getList(pageNumber);
+						ArrayList<BbsDto> list= (ArrayList<BbsDto>) request.getAttribute("list");
 						for(int i=0; i<list.size(); i++){
 					%>	
 						<tr>
 							<td><%= list.get(i).getBbsID() %></td>
-							<td><a href="view.jsp?bbsID=<%= list.get(i).getBbsID() %>"><%= list.get(i).getBbsTitle().replaceAll(" ", "&nbsp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br>") %></a></td>
+							<td><a href="contentView.do?bbsID=<%= list.get(i).getBbsID() %>"><%= list.get(i).getBbsTitle().replaceAll(" ", "&nbsp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br>") %></a></td>
 							<td><%= list.get(i).getUserID() %></td>
 							<td><%= list.get(i).getBbsDate().substring(0, 11) + list.get(i).getBbsDate().substring(11, 13) + "시" + list.get(i).getBbsDate().substring(14, 16) + "분" %></td>
 						</tr>
@@ -122,19 +118,23 @@
 
 				</tbody>
 			</table>
+			
 			<%
+				//현제 페이지가 첫 페이지가 아니면 이전 페이지 생성
+				int pageNumber= (int) request.getAttribute("pageNumber");	
 				if(pageNumber != 1){
 			%>		
-				<a href="bbs.jsp?pageNumber=<%=pageNumber -1%>" class="btn btn-success btn-arrow-left">이전</a>
+				<a href="bbs.do?pageNumber=<%=pageNumber -1%>" class="btn btn-success btn-arrow-left">이전</a>
 			<%
 				}
-				if(bbsDAO.nextPage(pageNumber+1)){
+				//다음페이지가 있으면 다음페이지 버튼 생성
+				if((boolean) request.getAttribute("isNextPage")){
 			%>
-				<a href="bbs.jsp?pageNumber=<%=pageNumber +1%>" class="btn btn-success btn-arrow-right">다음</a>
+				<a href="bbs.do?pageNumber=<%=pageNumber +1%>" class="btn btn-success btn-arrow-right">다음</a>
 			<%
 				}
 			%>
-			<a href="write.jsp" class="btn btn-primary pull-right">글쓰기</a>
+			<a href="writeView.do" class="btn btn-primary pull-right">글쓰기</a>
 		</div>
 	</div>
 	

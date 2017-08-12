@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="java.io.PrintWriter" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -34,7 +35,7 @@
 		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav">
 				<li><a href="main.jsp">메인</a></li>
-				<li class="active"><a href="bbs.jsp">게시판</a></li>
+				<li class="active"><a href="bbs.do">게시판</a></li>
 			</ul>
 			
 			<%
@@ -48,8 +49,8 @@
 						</a>
 	
 						<ul class="dropdown-menu">
-							<li><a href="login.jsp">로그인</a></li>
-							<li><a href="join.jsp">회원가입</a></li>
+							<li><a href="login.do">로그인</a></li>
+							<li><a href="join.do">회원가입</a></li>
 						</ul>
 					</li>
 				</ul>
@@ -66,7 +67,7 @@
 						</a>
 	
 						<ul class="dropdown-menu">
-							<li><a href="logoutAction.jsp">로그아웃</a></li>
+							<li><a href="logout.do">로그아웃</a></li>
 						</ul>
 					</li>
 				</ul>
@@ -78,7 +79,7 @@
 	
 	<div class="container">
 		<div class="row">
-		<form method="post" action="writeAction.jsp">
+		<form method="post" action="writeAction.do">
 			<table class="table table-striped" style="text-align: center; border: 1px solid #dddddd">
 				<thead>
 					<tr>

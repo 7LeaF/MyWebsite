@@ -1,8 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="java.io.PrintWriter" %>
-<%@ page import="bbs.Bbs" %>
-<%@ page import="bbs.BbsDAO" %>
+<%@ page import="dto.BbsDto" %>
 
 <!DOCTYPE html>
 <html>
@@ -15,39 +14,6 @@
 <title>JSP 게시판 웹 사이트</title>
 </head>
 <body>
-	<%
-		String userID= null;
-		if (session.getAttribute("userID")!= null){
-			userID= (String) session.getAttribute("userID");
-		}
-		if (userID== null){
-			PrintWriter script= response.getWriter();
-			script.println("<script>");
-			script.println("alert('로그인을 하세요.')");
-			script.println("location.href= 'bbs.jsp'");
-			script.println("</script>");
-		}
-		int bbsID= 0;
-		if (request.getParameter("bbsID") != null){
-			bbsID= Integer.parseInt(request.getParameter("bbsID"));
-		}
-		if(bbsID== 0){
-			PrintWriter script= response.getWriter();
-			script.println("<script>");
-			script.println("alert('유효하지 않은 글입니다.')");
-			script.println("location.href= 'bbs.jsp'");
-			script.println("</script>");
-		}
-		Bbs bbs= new BbsDAO().getBbs(bbsID);
-		if (!userID.equals(bbs.getUserID())){
-			PrintWriter script= response.getWriter();
-			script.println("<script>");
-			script.println("alert('권한이 없습니다.')");
-			script.println("location.href= 'bbs.jsp'");
-			script.println("</script>");
-		}
-			
-	%>
 
 	<nav class="navbar navbar-default">
 		<div class="navbar-header">
@@ -64,7 +30,7 @@
 		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav">
 				<li><a href="main.jsp">메인</a></li>
-				<li class="active"><a href="bbs.jsp">게시판</a></li>
+				<li class="active"><a href="bbs.do">게시판</a></li>
 			</ul>
 			
 			<ul class="nav navbar-nav navbar-right">
@@ -75,7 +41,7 @@
 					</a>
 
 					<ul class="dropdown-menu">
-						<li><a href="logoutAction.jsp">로그아웃</a></li>
+						<li><a href="logout.do">로그아웃</a></li>
 					</ul>
 				</li>
 			</ul>
@@ -84,7 +50,10 @@
 	
 	<div class="container">
 		<div class="row">
-		<form method="post" action="updateAction.jsp?bbsID=<%= bbsID %>">
+		<%
+			BbsDto content= (BbsDto) request.getAttribute("content");
+		%>
+		<form method="post" action="updateAction.do?bbsID=<%= content.getBbsID() %>">
 			<table class="table table-striped" style="text-align: center; border: 1px solid #dddddd">
 				<thead>
 					<tr>
@@ -93,14 +62,14 @@
 				</thead>
 				<tbody>
 					<tr>
-						<td><input type="text" class="form-control" placeholder="글 제목" name="bbsTitle" maxlength="50" value=<%= bbs.getBbsTitle() %>></td>
+						<td><input type="text" class="form-control" placeholder="글 제목" name="bbsTitle" maxlength="50" value=<%= content.getBbsTitle() %>></td>
 					</tr>
 					<tr>
-						<td><textarea class="form-control" placeholder="글 내용" name="bbsContent" maxlength="2048" style="height: 350px;"><%= bbs.getBbsContent() %></textarea></td>
+						<td><textarea class="form-control" placeholder="글 내용" name="bbsContent" maxlength="2048" style="height: 350px;"><%= content.getBbsContent() %></textarea></td>
 					</tr>
 				</tbody>
 			</table>
-			<input type="submit" class="btn btn-primary pull-right" value="글쓰기">
+			<input type="submit" class="btn btn-primary pull-right" value="글수정"  onclick="return confirm('정말로 수정 하시겠습니까?')">
 		</form>
 		</div>
 	</div>
