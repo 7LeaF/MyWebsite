@@ -43,7 +43,7 @@ public class BoardWriteActionCommand implements Command{
 			}else{
 				//제목, 내용 모두 작성되었다면 데이터베이스에 글 등록
 				BbsDao bbsDao= new BbsDao();
-				int result= bbsDao.write(bbsDto.getBbsTitle(), userID, bbsDto.getBbsTitle());
+				int result= bbsDao.write(bbsDto.getBbsTitle(), userID, bbsDto.getBbsContent());
 				
 				if (result == -1){
 					//데이터베이스에 데이터 입력 과정 에서 오류 발생시 처리

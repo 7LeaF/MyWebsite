@@ -22,7 +22,7 @@ public class BoardUpdateViewCommand implements Command{
 		
 		request.setAttribute("content", content);
 		
-		return "updateForm.jsp";
+		return "/board/updateForm.jsp";
 	
 	} //execute method end
 } //Class end

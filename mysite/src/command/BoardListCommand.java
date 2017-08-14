@@ -33,7 +33,7 @@ public class BoardListCommand implements Command{
 		request.setAttribute("isNextPage", isNextPage);
 		
 		
-		return "bbs.jsp";
+		return "/board/bbs.jsp";
 
 	} //execute method end
 } //Class End

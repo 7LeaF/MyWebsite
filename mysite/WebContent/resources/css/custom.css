@@ -9,6 +9,13 @@ h1 {
 	font-family: 'Hanna'; 
 }
 
+a, a:hover {
+	color: #000000;
+	text-decoration: none;
+}
+
 .carousel-inner > .item > img, .carousel-inner > .item > a > img {
     width: 100%;
 }
+
+

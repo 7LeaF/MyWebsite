@@ -42,14 +42,14 @@ public class FrontController extends HttpServlet {
 		
 		//회원 관리 기능
 		if(com.equals("/join.do")){
-			viewPage= "joinForm.jsp";
+			viewPage= "/user/joinForm.jsp";
 			
 		}else if(com.equals("/joinAction.do")){
 			command= new JoinCommand();
 			viewPage= command.execute(request, response);
 			
 		}else if(com.equals("/login.do")){
-			viewPage= "loginForm.jsp";
+			viewPage= "/user/loginForm.jsp";
 			
 		}else if(com.equals("/loginAction.do")){
 			command= new LoginCommand();
@@ -68,7 +68,7 @@ public class FrontController extends HttpServlet {
 			viewPage= command.execute(request, response);
 			
 		}else if(com.equals("/writeView.do")){
-			viewPage= "writeForm.jsp";
+			viewPage= "/board/writeForm.jsp";
 			
 		}else if(com.equals("/writeAction.do")){
 			command= new BoardWriteActionCommand();
