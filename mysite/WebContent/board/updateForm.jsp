@@ -1,6 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ page import="dto.BbsDto" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
 <html>
@@ -16,10 +15,7 @@
 	
 	<div class="container">
 		<div class="row">
-		<%
-			BbsDto content= (BbsDto) request.getAttribute("content");
-		%>
-		<form method="post" action="updateAction.do?bbsID=<%= content.getBbsID() %>">
+		<form method="post" action="updateAction.do?bbsID=${requestScope.content.bbsID}">
 			<table class="table table-striped" style="text-align: center; border: 1px solid #dddddd">
 				<thead>
 					<tr>
@@ -28,10 +24,10 @@
 				</thead>
 				<tbody>
 					<tr>
-						<td><input type="text" class="form-control" placeholder="글 제목" name="bbsTitle" maxlength="50" value=<%= content.getBbsTitle() %>></td>
+						<td><input type="text" class="form-control" placeholder="글 제목" name="bbsTitle" maxlength="50" value="${requestScope.content.bbsTitle}"></td>
 					</tr>
 					<tr>
-						<td><textarea class="form-control" placeholder="글 내용" name="bbsContent" maxlength="2048" style="height: 350px;"><%= content.getBbsContent() %></textarea></td>
+						<td><textarea class="form-control" placeholder="글 내용" name="bbsContent" maxlength="2048" style="height: 350px;">${requestScope.content.bbsContent}</textarea></td>
 					</tr>
 				</tbody>
 			</table>

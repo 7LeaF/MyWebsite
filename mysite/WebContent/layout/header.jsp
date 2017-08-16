@@ -1,39 +1,66 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix= "c" uri= "http://java.sun.com/jsp/jstl/core" %>
 
-<link rel="stylesheet" href="<%=request.getContextPath()%>/css/bootstrap.css">
-<link rel="stylesheet" href="<%=request.getContextPath()%>/css/custom.css">
-<script src="<%=request.getContextPath()%>/js/jquery-3.2.1.min.js"></script>
-<script src="<%=request.getContextPath()%>/js/bootstrap.min.js"></script>
-
-	<%
-		String userID= null;
-		if (session.getAttribute("userID")!= null){
-			userID= (String) session.getAttribute("userID");
-		}
-	%>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/custom.css">
+<script src="${pageContext.request.contextPath}/resources/js/jquery-3.2.1.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
 
 	<nav class="navbar navbar-default">
 		<div class="navbar-header">
+		
+		<a class="navbar-brand" href="main.jsp">JSP 게시판 웹 사이트</a>	
+		
 			<button type="button" class="navbar-toggle collapsed"
-			data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
+			data-toggle="collapse" data-target="#mysite-navbar-collapse"
 			aria-expanded="false">	
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
 				
-			<a class="navbar-brand" href="main.jsp">JSP 게시판 웹 사이트</a>	
 		</div>
-		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+		<div class="collapse navbar-collapse" id="mysite-navbar-collapse">
 			<ul class="nav navbar-nav">
 				<li><a href="main.jsp">메인</a></li>
 				<li><a href="bbs.do">게시판</a></li>
 			</ul>
-					
-			<%
-				if(userID== null){
-			%>
+				
+			<c:choose>
+				<c:when test="${sessionScope.userID== 'admin' }">
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="admin.jsp"><span class="glyphicon glyphicon-user"></span> 관리자</a></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle"
+							data-toggle="dropdown" role="button" aria-haspopup="true"
+							aria-expanded="false"> 회원관리 <span class="caret"></span>
+						</a>
+	
+						<ul class="dropdown-menu">
+							<li><a href="logout.do">로그아웃</a></li>
+						</ul>
+					</li>
+				</ul>
+				</c:when>
+				
+				<c:when test="${!empty sessionScope.userID}">
+				<ul class="nav navbar-nav navbar-right">
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle"
+							data-toggle="dropdown" role="button" aria-haspopup="true"
+							aria-expanded="false"> 회원관리 <span class="caret"></span>
+						</a>
+	
+						<ul class="dropdown-menu">
+							<li><a href="logout.do">로그아웃</a></li>
+						</ul>
+					</li>
+				</ul>
+				</c:when>
+				
+				<c:otherwise>
 				<ul class="nav navbar-nav navbar-right">
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle"
@@ -47,23 +74,7 @@
 						</ul>
 					</li>
 				</ul>
-			<%
-				}else{	
-			%>
-				<ul class="nav navbar-nav navbar-right">
-					<li class="dropdown">
-						<a href="#" class="dropdown-toggle"
-							data-toggle="dropdown" role="button" aria-haspopup="true"
-							aria-expanded="false"> 회원관리 <span class="caret"></span>
-						</a>
-	
-						<ul class="dropdown-menu">
-							<li><a href="logout.do">로그아웃</a></li>
-						</ul>
-					</li>
-				</ul>
-			<%
-				}
-			%>
+				</c:otherwise>
+			</c:choose>
 		</div>
 	</nav>

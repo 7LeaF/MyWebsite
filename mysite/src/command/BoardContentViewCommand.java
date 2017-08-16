@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 
 import dao.BbsDao;
 import dto.BbsDto;
+import util.StrUtil;
 
 public class BoardContentViewCommand implements Command{
 
@@ -28,6 +29,7 @@ public class BoardContentViewCommand implements Command{
 			bbsID= Integer.parseInt(request.getParameter("bbsID"));
 		}
 		
+		StrUtil strUtil= new StrUtil();
 		BbsDao bbsDao= new BbsDao();
 		BbsDto content= new BbsDto();
 		
@@ -40,6 +42,12 @@ public class BoardContentViewCommand implements Command{
 		
 		//게시글 내용 request 객체에 저장
 		content= bbsDao.getBbs(bbsID);
+		
+		//개행 및 띄어쓰기가 html내에서 제대로 표시되도록 변경	
+		content.setBbsTitle(strUtil.conToView(content.getBbsTitle()));
+		content.setBbsContent(strUtil.conToView(content.getBbsContent()));
+		
+
 		request.setAttribute("content", content);
 		
 		
@@ -49,6 +57,7 @@ public class BoardContentViewCommand implements Command{
 			isWriter= true;
 		}
 		System.out.println(userID +" / "+ content.getUserID() +" / "+ isWriter);;
+		
 		
 		request.setAttribute("isWriter", isWriter);
 		

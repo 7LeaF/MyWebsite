@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 
 import dao.BbsDao;
 import dto.BbsDto;
+import util.StrUtil;
 
 public class BoardUpdateActionCommand implements Command{
 
@@ -60,8 +61,16 @@ public class BoardUpdateActionCommand implements Command{
 			
 		}
 		
+		
+		//XSS 스크립트 제거
+		StrUtil strUtil= new StrUtil();
+		
+		String bbsTitle= strUtil.cleanXSS(request.getParameter("bbsTitle"));
+		String bbsContent= strUtil.cleanXSS(request.getParameter("bbsContent"));
+		
 		//글 업데이트
-		int result= bbsDao.update(bbsID, request.getParameter("bbsTitle"), request.getParameter("bbsContent"));
+		int result= bbsDao.update(bbsID, bbsTitle, bbsContent);
+		
 		
 		if(result== -1){
 			request.setAttribute("errorType", "updateFail");

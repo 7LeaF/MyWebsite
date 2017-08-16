@@ -1,7 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page import="java.util.ArrayList" %>
-<%@ page import="dto.BbsDto" %>
 
 <!DOCTYPE html>
 <html>
@@ -28,41 +28,27 @@
 					</tr>
 				</thead>
 				<tbody>
-					<%
-						ArrayList<BbsDto> list= (ArrayList<BbsDto>) request.getAttribute("list");
-						for(int i=0; i<list.size(); i++){
-					%>	
+					<c:forEach var="list" items="${requestScope.list}">
 						<tr>
-							<td><%= list.get(i).getBbsID() %></td>
-							<td><a href="contentView.do?bbsID=<%= list.get(i).getBbsID() %>"><%= list.get(i).getBbsTitle().replaceAll(" ", "&nbsp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br>") %></a></td>
-							<td><%= list.get(i).getUserID() %></td>
-							<td><%= list.get(i).getBbsDate().substring(0, 11) + list.get(i).getBbsDate().substring(11, 13) + "시" + list.get(i).getBbsDate().substring(14, 16) + "분" %></td>
+			 				<td>${list.bbsID}</td>
+							<td><a href="contentView.do?bbsID=${list.bbsID}">${fn:replace(list.bbsTitle,' ','&nbsp;')}</a></td> <!-- 리스트 출력시 띄어쓰기 처리 -->
+							<td>${list.userID}</td>
+							<td>${fn:substring(list.bbsDate,0,11)} (${fn:substring(list.bbsDate,11,13)}시 ${fn:substring(list.bbsDate,14,16)}분)</td>
 						</tr>
-						
-					
-					<%
-						}
-					%>
-					
+					</c:forEach>
 
 				</tbody>
 			</table>
 			
-			<%
-				//현제 페이지가 첫 페이지가 아니면 이전 페이지 생성
-				int pageNumber= (int) request.getAttribute("pageNumber");	
-				if(pageNumber != 1){
-			%>		
-				<a href="bbs.do?pageNumber=<%=pageNumber -1%>" class="btn btn-success btn-arrow-left">이전</a>
-			<%
-				}
-				//다음페이지가 있으면 다음페이지 버튼 생성
-				if((boolean) request.getAttribute("isNextPage")){
-			%>
-				<a href="bbs.do?pageNumber=<%=pageNumber +1%>" class="btn btn-success btn-arrow-right">다음</a>
-			<%
-				}
-			%>
+			<!-- 이전, 다음 버튼 생성 -->
+			<c:if test="${requestScope.pageNumber!= 1}">		
+				<a href="bbs.do?pageNumber=${requestScope.pageNumber -1}" class="btn btn-success btn-arrow-left">이전</a>
+			</c:if>
+		
+			<c:if test="${requestScope.isNextPage}">
+				<a href="bbs.do?pageNumber=${requestScope.pageNumber +1}" class="btn btn-success btn-arrow-right">다음</a>
+			</c:if>
+
 			<a href="writeView.do" class="btn btn-primary pull-right">글쓰기</a>
 		</div>
 	</div>

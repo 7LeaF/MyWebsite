@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 
 import dao.BbsDao;
 import dto.BbsDto;
+import util.StrUtil;
 
 public class BoardWriteActionCommand implements Command{
 
@@ -17,6 +18,7 @@ public class BoardWriteActionCommand implements Command{
 			throws ServletException, IOException {
 		
 		HttpSession session= request.getSession();
+		StrUtil strUtil= new StrUtil();
 		
 		//userID는 로그인 되었을 경우 생성되는 세션 속성 값
 		String userID= null;
@@ -43,6 +45,11 @@ public class BoardWriteActionCommand implements Command{
 			}else{
 				//제목, 내용 모두 작성되었다면 데이터베이스에 글 등록
 				BbsDao bbsDao= new BbsDao();
+
+				//XSS 스크립트 제거
+				bbsDto.setBbsTitle(strUtil.cleanXSS(bbsDto.getBbsTitle()));
+				bbsDto.setBbsContent(strUtil.cleanXSS(bbsDto.getBbsContent()));
+				
 				int result= bbsDao.write(bbsDto.getBbsTitle(), userID, bbsDto.getBbsContent());
 				
 				if (result == -1){

@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import dao.BbsDao;
 import dto.BbsDto;
+import util.StrUtil;
 
 public class BoardUpdateViewCommand implements Command{
 
